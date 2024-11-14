@@ -25,11 +25,10 @@ public class Main {
 
         Stack<String> stack = new Stack<>();
 
-        for (int i = 0; i < pieFlavors.size(); i++) {
-            stack.push(pieFlavors.get(i));
+        while (!pieFlavors.isEmpty()) {
+            stack.push(pieFlavors.get(0));
+            pieFlavors.remove(0);
         }
-
-        pieFlavors.clear();
 
         while (!stack.isEmpty()) {
             pieFlavors.add(stack.pop());
