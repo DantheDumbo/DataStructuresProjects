@@ -8,9 +8,12 @@ public class Main {
 
         ListIterator<Integer> li = data.listIterator();
 
+        /*
         while (li.hasNext()) { //forward parse
             System.out.println(li.next());
         }
+
+         */
 
         System.out.println("--------");
 
