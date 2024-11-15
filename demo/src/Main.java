@@ -19,7 +19,7 @@ public class Main {
             }
         }
 
-        return new ArrayList<>(seen); // Convert LinkedHashSet to Arra
+        return new ArrayList<>(seen); // Convert LinkedHashSet to ArrayList
     }
 
 
