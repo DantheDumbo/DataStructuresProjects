@@ -1,11 +1,13 @@
-
+import java.net.SocketOption;
+import java.sql.SQLOutput;
 
 public class Main {
     public static void main(String[] args) {
-        int a, b;
-        a=1;
-        b=3;
-        System.out.println(a+b);
+        int sauce = 0;
+        for(int i = 0; i < 6; i++) {
+            sauce++;
+        }
+        System.out.println(sauce);
     }
 
 
