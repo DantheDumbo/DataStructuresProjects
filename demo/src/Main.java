@@ -8,25 +8,26 @@ public class Main {
     }
 
     public static List<Character> repeatedLetters(String str) {
-        // Convert string to lowercase to handle case insensitivity
-        str = str.toLowerCase();
+        if (str == null || str.isEmpty()) {
+            return new ArrayList<>();
+        }
 
-        // Use a HashMap to count occurrences of each character
-        Map<Character, Integer> counts = new HashMap<>();
-        for (char c : str.toCharArray()) {
+        int[] counts = new int[26];
+        char[] charArray = str.toCharArray();
+
+        for (char c : charArray) {
             if (Character.isLetter(c)) {
-                counts.put(c, counts.getOrDefault(c, 0) + 1);
+                counts[Character.toLowerCase(c) - 'a']++;
             }
         }
 
-        // Collect characters that appear more than once into a sorted list
         List<Character> result = new ArrayList<>();
-        for (Map.Entry<Character, Integer> entry : counts.entrySet()) {
-            if (entry.getValue() > 1) {
-                result.add(entry.getKey());
+        for (int i = 0; i < counts.length; i++) {
+            if (counts[i] > 1) {
+                result.add((char) (i + 'a'));
             }
         }
-        Collections.sort(result); // Sort the result alphabetically
+
         return result;
     }
 }
