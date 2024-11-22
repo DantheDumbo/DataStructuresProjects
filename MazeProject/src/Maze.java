@@ -1,3 +1,4 @@
+import java.util.Scanner;
 import java.util.Stack;
 
 enum Direction {UP, RIGHT, DOWN, LEFT}
@@ -17,7 +18,7 @@ public class Maze {
     private int[][] visited; // tracks cells already visited
 
     private Stack<Mouse> stack;
-    private Mouse workingMouse;
+
 
 
 
@@ -41,6 +42,8 @@ public class Maze {
 
 
 
+
+    // constructor to initialize maze properties
     public Maze(int maxRows, int maxCols, int[][] maze, int foodRow, int foodCol) {
         this.maxRows = maxRows;
         this.maxCols = maxCols;
@@ -48,21 +51,37 @@ public class Maze {
         this.foodRow = foodRow;
         this.foodCol = foodCol;
         this.isSolved = false;
-        initializeVisited();
+        this.visited = new int[maxRows][maxCols]; // initializes all to 0
         this.stack = new Stack<>();
-        this.visited = new int[maxRows][maxCols];
     }
 
-    private boolean wasVisited(int row, int col) {
-        return true; // temp
+    //checks to see if a cell has already been visited
+    private boolean isVisited(int row, int col) {
+        return visited[row][col] == 1;
     }
 
-    private void initializeVisited() {
-        for (int r = 0; r < this.maxRows; r++) {
-            for (int c = 0; c < this.maxCols; c++) {
-                this.visited[r][c] = 0;
-            }
+    //checks to see if four conditions have been met
+    private boolean isValid(int row, int col) {
+        /*
+        - Are the coordinates in the world?
+        - Is there a wall there?
+        - Is there a dead end there?
+        - Have we been there before?
+        - If all four checks pass, return true
+        */
+        // checks if point is out of bounds
+        if (row >= maxRows || row < 0 || col >= maxCols || col < 0) {
+            return false;
         }
+        // checks if point is on a wall
+        if (this.maze[row][col] == 0) {
+            return false;
+        }
+        // checks if we have been here before
+        if (isVisited(row, col)) {
+            return false;
+        }
+        return true;
     }
 
     // utility method to print a matrix (maze or visited)
@@ -76,44 +95,63 @@ public class Maze {
         System.out.println();
     }
 
-    private boolean isVisited (int row, int col) {
-        return visited[row][col] == 1;
+    // debugging method to pause the program
+    public static void pause() {
+        try (java.util.Scanner scan = new java.util.Scanner(System.in)) {
+            System.out.println("Hit enter to continue");
+            scan.nextLine();
+        }
     }
 
-
-    //checks to see if four conditions have beeen met
-    private boolean isValid(int row, int col) {
-    /*
-    are the coordinates in the word?
-    is there a wall there
-    is there a dead end there
-    have we been there before
-    if all four digests pass, return true
-     */
-        // checks if point is out of bounds
-        if (row >= maxRows || row < 0 || col >= maxCols || col < 0) {
-            return false;
-        }
-        // checks if point is on a wall
-        if (this.maze[row][col] == 0) {
-            return false;
-        }
-        // checks if point has been visited
-        if (this.maze[row][col] == -1) {
-            return false;
-        }
-        // checks if we have been here before
-        if (isVisited(row, col)) {
-            return false;
-        }
-        return true;
-    }
+    // solves the maze using DFS
     public boolean solve() {
         //debug
         printMatrix(this.maze);
         //debug
         printMatrix(this.visited);
-        return true; 
+
+        /*
+
+        // push the initial mouse position to the stack
+        stack.push(new Mouse(0, 0)); // Start at top-left
+
+        // main loop for solving the maze
+        while (!stack.isEmpty()) {
+            Mouse current = stack.peek();
+            visited[current.r][current.c] = 1; // mark current cell as visited
+
+            // check if we've found the food
+            if (current.r == foodRow && current.c == foodCol) {
+                System.out.println("Food found!");
+                return true;
+            }
+
+            // attempt to move in each direction
+            boolean moved = false;
+            for (Direction dir : Direction.values()) {
+                int newRow = current.r + (dir == Direction.DOWN ? 1 : dir == Direction.UP ? -1 : 0);
+                int newCol = current.c + (dir == Direction.RIGHT ? 1 : dir == Direction.LEFT ? -1 : 0);
+
+                if (isValid(newRow, newCol)) {
+                    stack.push(new Mouse(newRow, newCol)); // move mouse
+                    moved = true;
+                    break;
+                }
+            }
+
+            // if no valid move, backtrack
+            if (!moved) {
+                stack.pop();
+            }
+        }
+
+        System.out.println("No path to food!");
+        return false; // no solution
+
+         */
+
+
+
     }
 }
 
