@@ -43,5 +43,4 @@ public class Maze {
     private void initializeVisited() {
         // set all values of the visited matrix to false
     }
-
 }
