@@ -1,7 +1,6 @@
 import java.util.Scanner;
 import java.util.Stack;
 
-enum Direction {UP, RIGHT, DOWN, LEFT}
 
 public class Maze {
     // properties of maze
@@ -26,12 +25,16 @@ public class Maze {
     private static class Mouse {
         int r;
         int c;
-        Direction dir;
+        int dir;
 
         public Mouse(int r, int c) {
             this.r = r;
             this.c = c;
-            this.dir = Direction.UP;
+            this.dir = 0;
+            // 0 = up
+            // 1 = right
+            // 2 = down
+            // 3 = left
         }
 
         @Override
@@ -55,7 +58,7 @@ public class Maze {
         this.stack = new Stack<>();
     }
 
-    //checks to see if a cell has already been visited
+    //checks to see if a cell has already been visited (used by the isValid method)
     private boolean isVisited(int row, int col) {
         return visited[row][col] == 1;
     }
@@ -110,9 +113,17 @@ public class Maze {
         //debug
         printMatrix(this.visited);
 
+        stack.push(new Mouse(0, 0)); // Start at top-left
 
+        while (!stack.isEmpty()) {
+            Mouse current = stack.peek();
+            visited[current.r][current.c] = 1;
 
-
+            if (current.r == foodRow && current.c == foodCol) {
+                System.out.println("Food found!");
+                return true;
+            }
+        }
 
 
 
@@ -157,6 +168,10 @@ public class Maze {
         return false; // no solution
 
          */
+    }
+
+    public void printPath() {
+        System.out.println(stack);
     }
 }
 
