@@ -110,6 +110,14 @@ public class Maze {
         //debug
         printMatrix(this.visited);
 
+
+
+
+
+
+
+
+
         /*
 
         // push the initial mouse position to the stack
@@ -149,9 +157,6 @@ public class Maze {
         return false; // no solution
 
          */
-
-
-
     }
 }
 
