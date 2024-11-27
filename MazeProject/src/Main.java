@@ -10,5 +10,19 @@ public class Main {
 
         Maze m1 = new Maze(maze1.length, maze1[0].length, maze1, maze1.length - 1, maze1[0].length - 1);
         m1.solve();
+
+
+
+        int[][] maze2 = {
+                {1, 1, 1, 1, 0, 1},
+                {0, 0, 1, 0, 0, 1},
+                {0, 1, 1, 1, 1, 1},
+                {1, 1, 0, 1, 0, 1},
+                {1, 1, 1, 1, 0, 0},
+                {0, 0, 0, 1, 1, 1},
+        };
+
+        Maze m2 = new Maze(maze2.length, maze2[0].length, maze2, maze2.length - 1, maze2[0].length - 1);
+        m2.solve();
     }
 }

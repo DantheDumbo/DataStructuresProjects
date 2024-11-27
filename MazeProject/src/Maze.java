@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -15,8 +16,11 @@ public class Maze {
 
     private int[][] maze; // contains our maze
     private int[][] visited; // tracks cells already visited
+    private int[][] path;
 
     private Stack<Mouse> stack;
+
+    Scanner scan = new Scanner(System.in);
 
 
 
@@ -99,19 +103,17 @@ public class Maze {
     }
 
     // debugging method to pause the program
-    public static void pause() {
-        try (java.util.Scanner scan = new java.util.Scanner(System.in)) {
-            System.out.println("Hit enter to continue");
-            scan.nextLine();
-        }
+    public static void pause(Scanner scan) {
+        System.out.println("Hit enter to continue");
+        scan.nextLine();
     }
 
     // solves the maze using DFS
     public boolean solve() {
-        //debug
-        printMatrix(this.maze);
-        //debug
-        printMatrix(this.visited);
+        if (!isValid(0, 0)) {
+            System.out.println("Starting point is invalid.");
+            return false;
+        }
 
         stack.push(new Mouse(0, 0)); // Start at top-left
 
@@ -119,59 +121,70 @@ public class Maze {
             Mouse current = stack.peek();
             visited[current.r][current.c] = 1;
 
+            // Check for food
             if (current.r == foodRow && current.c == foodCol) {
                 System.out.println("Food found!");
-                return true;
-            }
-        }
-
-
-
-
-
-        /*
-
-        // push the initial mouse position to the stack
-        stack.push(new Mouse(0, 0)); // Start at top-left
-
-        // main loop for solving the maze
-        while (!stack.isEmpty()) {
-            Mouse current = stack.peek();
-            visited[current.r][current.c] = 1; // mark current cell as visited
-
-            // check if we've found the food
-            if (current.r == foodRow && current.c == foodCol) {
-                System.out.println("Food found!");
+                printPath();
                 return true;
             }
 
-            // attempt to move in each direction
             boolean moved = false;
-            for (Direction dir : Direction.values()) {
-                int newRow = current.r + (dir == Direction.DOWN ? 1 : dir == Direction.UP ? -1 : 0);
-                int newCol = current.c + (dir == Direction.RIGHT ? 1 : dir == Direction.LEFT ? -1 : 0);
 
-                if (isValid(newRow, newCol)) {
-                    stack.push(new Mouse(newRow, newCol)); // move mouse
+            // Check all directions
+            while (current.dir < 4 && !moved) {
+                if (current.dir == 0 && isValid(current.r - 1, current.c)) { // Up
+                    stack.push(new Mouse(current.r - 1, current.c));
                     moved = true;
-                    break;
+                } else if (current.dir == 1 && isValid(current.r, current.c + 1)) { // Right
+                    stack.push(new Mouse(current.r, current.c + 1));
+                    moved = true;
+                } else if (current.dir == 2 && isValid(current.r + 1, current.c)) { // Down
+                    stack.push(new Mouse(current.r + 1, current.c));
+                    moved = true;
+                } else if (current.dir == 3 && isValid(current.r, current.c - 1)) { // Left
+                    stack.push(new Mouse(current.r, current.c - 1));
+                    moved = true;
                 }
+                current.dir++;
             }
 
-            // if no valid move, backtrack
             if (!moved) {
-                stack.pop();
+                stack.pop(); // Dead end, backtrack
             }
+
+            printMatrix(this.visited); // Debugging
+            pause(scan);
         }
 
-        System.out.println("No path to food!");
-        return false; // no solution
-
-         */
+        System.out.println("No path to cheese.");
+        return false;
     }
 
     public void printPath() {
-        System.out.println(stack);
+        Stack<Mouse> tempStack = new Stack<>();
+        int[][] path = deepCopy(maze);
+        Mouse m;
+
+        while (!stack.isEmpty()) {
+            tempStack.push(stack.pop());
+        }
+        while (!tempStack.isEmpty()) {
+            m = tempStack.pop();
+            path[m.r][m.c] = -1;
+        }
+        printMatrix(path);
+    }
+
+    public static int[][] deepCopy(int[][] original) {
+        if (original == null) {
+            return null;
+        }
+
+        final int[][] result = new int[original.length][];
+        for (int i = 0; i < original.length; i++) {
+            result[i] = Arrays.copyOf(original[i], original[i].length);
+        }
+        return result;
     }
 }
 
