@@ -1,3 +1,4 @@
+
 public class MyLinkedList {
 
     public class Node {
@@ -18,16 +19,29 @@ public class MyLinkedList {
     // properties
     private Node front;
 
-    // contractors
+    // constructors
     public MyLinkedList() {
         this.front = null;
     }
 
     // methods
+    public boolean isEmpty() {
+        return front == null;
+    }
 
-    // public boolean isEmpty
-    // public int size
-    // add
+    public int size() {
+        int size = 0;
+        Node temp = front;
+        while (temp != null) {
+            size++;
+            temp = temp.next;
+        }
+        return size;
+    }
+
+    public void add(int x) {
+        Node.next = new Node(x); 
+    }
     // remove
     // get
     // set
