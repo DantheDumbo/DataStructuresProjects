@@ -11,5 +11,22 @@ public class Main {
         n1.next = n2;
         n2.next = n3;
         n3.next = null;
+
+        System.out.print("[ ");
+        Node temp = front;
+        while (temp != null) {
+            System.out.print(temp + " ");
+            temp = temp.next;
+        }
+        System.out.println("]");
+        System.out.println();
+
+        int size = 0;
+        temp = front;
+        while (temp != null) {
+            size++;
+            temp = temp.next;
+        }
+        System.out.println("Size of list is " + size);
     }
 }
