@@ -151,9 +151,10 @@ public class Maze {
             if (!moved) {
                 stack.pop(); // Dead end, backtrack
             }
-
+            /*
             printMatrix(this.visited); // Debugging
             pause(scan);
+             */
         }
 
         System.out.println("No path to cheese.");
