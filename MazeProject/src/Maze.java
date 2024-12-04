@@ -23,8 +23,6 @@ public class Maze {
     Scanner scan = new Scanner(System.in);
 
 
-
-
     // Mouse class
     private static class Mouse {
         int r;
@@ -47,8 +45,7 @@ public class Maze {
         }
     }
 
-
-
+    
 
     // constructor to initialize maze properties
     public Maze(int maxRows, int maxCols, int[][] maze, int foodRow, int foodCol) {
