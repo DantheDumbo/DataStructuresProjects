@@ -16,7 +16,6 @@ public class Maze {
 
     private int[][] maze; // contains our maze
     private int[][] visited; // tracks cells already visited
-    private int[][] path;
 
     private Stack<Mouse> stack;
 
