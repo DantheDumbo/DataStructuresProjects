@@ -168,7 +168,7 @@ public class Maze {
         }
         while (!tempStack.isEmpty()) {
             m = tempStack.pop();
-            path[m.r][m.c] = -1;
+            path[m.r][m.c] = -2;
         }
         printMatrix(path);
     }

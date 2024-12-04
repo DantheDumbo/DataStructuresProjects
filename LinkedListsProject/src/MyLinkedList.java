@@ -40,7 +40,7 @@ public class MyLinkedList {
     }
 
     public void add(int x) {
-        Node.next = new Node(x); 
+        Node.next = new Node(x);
     }
     // remove
     // get

@@ -85,6 +85,20 @@ public class Main {
         Maze maze3 = new Maze(maze3Array.length, maze3Array[0].length, maze3Array, maze3Array.length -1, maze3Array[0].length - 1);
         maze3.solve();
 
+        int[][] maze4Array = {
+                {1, 1, 1, 1, 1, 1, 0, 0, 1, 0},
+                {0, 0, 0, 1, 0, 1, 0, 1, 1, 1},
+                {1, 0, 0, 1, 1, 1, 0, 1, 0, 1},
+                {1, 0, 0, 0, 0, 1, 1, 1, 0, 1},
+                {1, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+                {1, 0, 1, 0, 0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 1, 1, 0, 1, 1, 1},
+                {1, 1, 1, 0, 0, 1, 1, 1, 0, 0}
+        };
+        Maze maze4 = new Maze(maze4Array.length, maze4Array[0].length, maze4Array, maze4Array.length -1, maze4Array[0].length - 1);
+        maze4.solve();
+
+
 
         /*
         int[][] maze1 = {
