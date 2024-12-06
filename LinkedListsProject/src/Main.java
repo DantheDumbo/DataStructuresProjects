@@ -54,7 +54,7 @@ public class Main {
         Node t = front;
         if (t != null) {
             if (t.next == null) {
-                t = null;m
+                t = null;
             }
             else {
                 while (t.next.next != null) {

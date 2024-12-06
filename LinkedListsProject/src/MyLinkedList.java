@@ -18,6 +18,7 @@ public class MyLinkedList {
 
     // properties
     private Node front;
+    private Node temp;
 
     // constructors
     public MyLinkedList() {
@@ -31,7 +32,7 @@ public class MyLinkedList {
 
     public int size() {
         int size = 0;
-        Node temp = front;
+        temp = front;
         while (temp != null) {
             size++;
             temp = temp.next;
@@ -39,12 +40,64 @@ public class MyLinkedList {
         return size;
     }
 
-    public void add(int x) {
-        //Node.next = new Node(x);
+    // add
+    public void add (int x) {
+        if (front == null) {
+            front = new Node(x);
+        }
+        else {
+            temp = front;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = new Node(x);
+        }
     }
-    // remove
-    // get
-    // set
-    // toString
 
+    // remove
+    public void remove (int x) {
+        if (front != null) {
+            temp = front;
+            for (int i=0; i<x; i++) {
+                if (temp.next != null) {
+                    temp = temp.next;
+                } else {
+                    break;
+                }
+            }
+            if (temp.next != null && temp.next.next != null) {
+                temp.next = temp.next.next;
+            }
+        }
+    }
+
+    // get
+    public Integer get (int x) {
+        if (front != null) {
+            temp = front;
+            for (int i=0; i<x; i++) {
+                if (temp.next != null) {
+                    temp = temp.next;
+                } else {
+                    break;
+                }
+            }
+            return temp.data;
+        }
+        return null;
+    }
+
+    // toString
+    public String toString() {
+        if (front == null) {
+            return "";
+        }
+        String str = "";
+        temp = front;
+        while (temp.next != null) {
+            str += temp.data + "";
+            temp = temp.next;
+        }
+        return str;
+    }
 }
