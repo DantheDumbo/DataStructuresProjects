@@ -1,4 +1,3 @@
-import java.util.*;
 
 public class Main {
 
@@ -18,10 +17,9 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        int numPeople = 0;
-        int lastPersonStanding = 0;
-        Node temp = null;
-        Node front = null;
+        int numPeople;
+        Node temp;
+        Node front;
 
         for (int i=1; i <= 256; i++) {
             numPeople = i;
