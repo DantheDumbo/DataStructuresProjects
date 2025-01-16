@@ -1,7 +1,6 @@
 /*
 Massada problem
 Prints the 256 combinations of who survives
-
 * Daniel Tuma
  */
 public class Main {
