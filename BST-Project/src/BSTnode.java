@@ -11,6 +11,6 @@ public class BSTnode {
     public BSTnode(int data) {
         this.left = null;
         this.data = data;
-        this.right = nullc;
+        this.right = null;
     }
 }
