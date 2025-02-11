@@ -53,7 +53,7 @@ public class Main {
         precedence.put('-', 1);
         precedence.put('*', 2);
         precedence.put('/', 2);
-        
+
         return precedence.getOrDefault(a, 0) > precedence.getOrDefault(b, 0) ||
                 (precedence.getOrDefault(a, 0) == precedence.getOrDefault(b, 0) && a != '(');
     }
