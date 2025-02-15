@@ -2,28 +2,18 @@ public class Main {
 
     public static boolean isInTree(BSTnode root, int target) {
         BSTnode current = root;
-        if (current == null) {
-            return false;
-        }
-        /*
         while (current != null) {
-            if (current.left.data > target) {
+            if (current.data > target) {
                 current = current.left;
-                System.out.println("2");
-            } if (current.right.data > target) {
+            } else if (current.data < target) {
                 current = current.right;
-                System.out.println("3");
-            } if (current.data == target) {
-                System.out.println("4");
+            } else { 
                 return true;
             }
         }
-
-         */
-        current = current.left;
-        System.out.println(current.data);
         return false;
     }
+
 
     public static void add(BSTnode root, int target) {
 
