@@ -1,51 +1,46 @@
 public class Main {
-
-    public static boolean isInTree(BSTnode root, int target) {
-        BSTnode current = root;
-        while (current != null) {
-            if (current.data > target) {
-                current = current.left;
-            } else if (current.data < target) {
-                current = current.right;
-            } else { 
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-    public static void add(BSTnode root, int target) {
-
-    }
-
-    public static void printTree(BSTnode root) {
-        if (root == null) {
-            return;
-        }
-
-        printTree(root.left);
-        System.out.println(root.data);
-        printTree(root.right);
-    }
-
     public static void main(String[] args) {
-        BSTnode root = new BSTnode(5);
+        BST tree = new BST();
 
-        root.left = new BSTnode(3);
-        root.right = new BSTnode(8);
+        tree.add(10);
+        tree.add(5);
+        tree.add(15);
+        tree.add(3);
+        tree.add(7);
+        tree.add(12);
+        tree.add(20);
 
-        root.left.left = new BSTnode(-1);
-        root.left.right = new BSTnode(4);
+        System.out.println("Tree contents:");
+        tree.printTree(); // Expected output: 3 5 7 10 12 15 20
 
-        root.right.left = new BSTnode(7);
-        root.right.right = new BSTnode(11);
+        System.out.println("\nIs 7 in the tree? " + tree.isInTree(7)); // Expected: true
+        System.out.println("Is 8 in the tree? " + tree.isInTree(8)); // Expected: false
 
-        root.right.right.right = new BSTnode(13);
+        System.out.println("\nAdding 8 to the tree...");
+        tree.add(8);
 
-        printTree(root);
+        System.out.println("Updated tree contents:");
+        tree.printTree(); // Expected output: 3 5 7 8 10 12 15 20
 
-        System.out.println(isInTree(root, 7));
-        System.out.println(isInTree(root, 6));
+        System.out.println("\nIs 8 in the tree now? " + tree.isInTree(8)); // Expected: true
+
+
+        System.out.println("\nDeleting 3 in tree...");
+        tree.delete(3);
+
+        System.out.println("Updated tree contents:");
+        tree.printTree(); // Expected output: 5 7 8 10 12 15 20
+
+        System.out.println("\nDeleting 7 in tree...");
+        tree.delete(7);
+
+        System.out.println("Updated tree contents:");
+        tree.printTree(); // Expected output: 5 8 10 12 15 20
+
+        System.out.println("\nDeleting 10 in tree...");
+        tree.delete(10);
+
+        System.out.println("Updated tree contents:");
+        tree.printTree(); // Expected output: 5 7 8 12 15 20
     }
 }

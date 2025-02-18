@@ -2,8 +2,62 @@ public class BST {
     private BSTnode root;
 
     public BST() {
-        this.root = null; // Initialize an empty tree
+        this.root = null;
     }
+
+    public void delete(int value) {
+        root = deleteRecursive(root, value);
+    }
+
+    private BSTnode deleteRecursive(BSTnode current, int value) {
+        if (current == null) {
+            return null; // Base case: the value is not found
+        }
+
+        if (value < current.data) {
+            // If the value is smaller, go to left subtree
+            current.left = deleteRecursive(current.left, value);
+        } else if (value > current.data) {
+            // If the value is larger, go to right subtree
+            current.right = deleteRecursive(current.right, value);
+        } else {
+            // Node to delete is found
+
+            // Case 1: No children (leaf node)
+            if (current.left == null && current.right == null) {
+                return null;
+            }
+
+            // Case 2: Only one child
+            if (current.left == null) {
+                return current.right;
+            }
+            if (current.right == null) {
+                return current.left;
+            }
+
+            // Case 3: Two children
+            // Find the smallest value in the right subtree
+            int smallestValue = findSmallestValue(current.right);
+            current.data = smallestValue; // Replace the current node's value with the smallest value
+            // Delete the smallest value in right tree
+            current.right = deleteRecursive(current.right, smallestValue);
+        }
+
+        return current; // Return the updated node
+    }
+
+    private int findSmallestValue(BSTnode root) {
+        if (root.left == null) {
+            // If there is no left child, this node is the smallest
+            return root.data;
+        } else {
+            // Otherwise, keep going left to find the smallest value
+            return findSmallestValue(root.left);
+        }
+    }
+
+
 
     public void add(int value) {
         root = addRecursive(root, value);
@@ -11,33 +65,34 @@ public class BST {
 
     private BSTnode addRecursive(BSTnode current, int value) {
         if (current == null) {
-            return new BSTnode(value); // Create a new node if the tree/subtree is empty
+            return new BSTnode(value);
         }
 
         if (value < current.data) {
-            current.left = addRecursive(current.left, value); // Add to left subtree
+            current.left = addRecursive(current.left, value);
         } else if (value > current.data) {
-            current.right = addRecursive(current.right, value); // Add to right subtree
+            current.right = addRecursive(current.right, value);
         }
-        // Ignore duplicates
-        return current; // Return the updated tree
+
+        return current;
     }
 
     public boolean isInTree(int target) {
-        return isInTreeRecursive(root, target);
+        BSTnode current = root;
+
+        while (current != null) {
+            if (current.data == target) {
+                return true;
+            } else if (target < current.data) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+
+        return false;
     }
 
-    private boolean isInTreeRecursive(BSTnode current, int target) {
-        if (current == null) {
-            return false; // Reached the end, target not found
-        }
-        if (current.data == target) {
-            return true; // Found the target
-        }
-        return target < current.data
-                ? isInTreeRecursive(current.left, target) // Search left subtree
-                : isInTreeRecursive(current.right, target); // Search right subtree
-    }
 
     public void printTree() {
         printTreeRecursive(root);
@@ -46,13 +101,12 @@ public class BST {
 
     private void printTreeRecursive(BSTnode current) {
         if (current != null) {
-            printTreeRecursive(current.left); // In-order traversal
+            printTreeRecursive(current.left);
             System.out.print(current.data + " ");
             printTreeRecursive(current.right);
         }
     }
 
-    // Inner class representing a single node in the tree
     private static class BSTnode {
         int data;
         BSTnode left;
