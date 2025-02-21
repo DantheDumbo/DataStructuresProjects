@@ -1,9 +1,19 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Graph {
+    public void dfs() {
+        Stack<Node> stack = new Stack<>();
+        ArrayList<Node> visitedNodesList = new ArrayList<>();
+
+        //Node current = adjNode.
+
+        while (!stack.isEmpty()) {
+            System.out.println();
+        }
+    }
+
+
+
     private static class Node {
         String label;
 
@@ -11,34 +21,35 @@ public class Graph {
             this.label = label;
         }
     }
-        private Map<Node, List<Node>> adjNode;
 
-        public Graph() {
-            adjNode = new HashMap<>();
-        }
+    private Map<Node, List<Node>> adjNode;
 
-        public void addNode(Node Node) {
-            adjNode.putIfAbsent(Node, new ArrayList<>());
-        }
+    public Graph() {
+        adjNode = new HashMap<>();
+    }
 
-        public void addEdge(Node Node1, Node Node2) {
-            adjNode.get(Node1).add(Node2);
-            adjNode.get(Node2).add(Node1); // For undirected graph
-        }
+    public void addNode(String str) {
+        adjNode.putIfAbsent(new Node(str), new ArrayList<>());
+    }
 
-        public void removeEdge(Node Node1, Node Node2) {
-            adjNode.get(Node1).remove(Node2);
-            adjNode.get(Node2).remove(Node1); // For undirected graph
-        }
+    public void addEdge(String str1, String str2) {
+        adjNode.get(new Node(str1)).add(new Node(str2));
+        adjNode.get(new Node(str2)).add(new Node(str1));
+    }
 
-        public void removeNode(Node Node) {
-            adjNode.remove(Node);
-            for (List<Node> edges : adjNode.values()) {
-                edges.remove(Node);
-            }
-        }
+    public void removeEdge(String str1, String str2) {
+        adjNode.get(new Node(str1)).remove(new Node(str2));
+        adjNode.get(new Node(str2)).remove(new Node(str1));
+    }
 
-        public List<Node> getVertices() {
-            return new ArrayList<>(adjNode.keySet());
+    public void removeNode(String str) {
+        adjNode.remove(new Node(str));
+        for (List<Node> edges : adjNode.values()) {
+            edges.remove(new Node(str));
         }
+    }
+
+    public List<Node> getVertices() {
+        return new ArrayList<>(adjNode.keySet());
+    }
 } 
