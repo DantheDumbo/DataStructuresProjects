@@ -11,22 +11,27 @@ class Graph {
         adjList.putIfAbsent(src, new ArrayList<>());
         adjList.putIfAbsent(dest, new ArrayList<>());
         adjList.get(src).add(dest);
-        adjList.get(dest).add(src); // For an undirected graph
+        adjList.get(dest).add(src);
     }
 
     public void dfs(int start) {
         Set<Integer> visited = new HashSet<>();
-        dfsHelper(start, visited);
-    }
+        Stack<Integer> stack = new Stack<>();
 
-    private void dfsHelper(int node, Set<Integer> visited) {
-        if (visited.contains(node)) return;
+        stack.push(start);
 
-        System.out.print(node + " ");
-        visited.add(node);
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            if (!visited.contains(node)) {
+                System.out.print(node + " ");
+                visited.add(node);
 
-        for (int neighbor : adjList.getOrDefault(node, new ArrayList<>())) {
-            dfsHelper(neighbor, visited);
+                for (int neighbor : adjList.getOrDefault(node, new ArrayList<>())) {
+                    if (!visited.contains(neighbor)) {
+                        stack.push(neighbor);
+                    }
+                }
+            }
         }
     }
 
