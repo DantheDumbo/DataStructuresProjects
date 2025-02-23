@@ -1,55 +1,52 @@
 import java.util.*;
 
-public class Graph {
-    public void dfs() {
-        Stack<Node> stack = new Stack<>();
-        ArrayList<Node> visitedNodesList = new ArrayList<>();
-
-        //Node current = adjNode.
-
-        while (!stack.isEmpty()) {
-            System.out.println();
-        }
-    }
-
-
-
-    private static class Node {
-        String label;
-
-        Node(String label) {
-            this.label = label;
-        }
-    }
-
-    private Map<Node, List<Node>> adjNode;
+class Graph {
+    private final Map<Integer, List<Integer>> adjList;
 
     public Graph() {
-        adjNode = new HashMap<>();
+        this.adjList = new HashMap<>();
     }
 
-    public void addNode(String str) {
-        adjNode.putIfAbsent(new Node(str), new ArrayList<>());
+    public void addEdge(int src, int dest) {
+        adjList.putIfAbsent(src, new ArrayList<>());
+        adjList.putIfAbsent(dest, new ArrayList<>());
+        adjList.get(src).add(dest);
+        adjList.get(dest).add(src); // For an undirected graph
     }
 
-    public void addEdge(String str1, String str2) {
-        adjNode.get(new Node(str1)).add(new Node(str2));
-        adjNode.get(new Node(str2)).add(new Node(str1));
+    public void dfs(int start) {
+        Set<Integer> visited = new HashSet<>();
+        dfsHelper(start, visited);
     }
 
-    public void removeEdge(String str1, String str2) {
-        adjNode.get(new Node(str1)).remove(new Node(str2));
-        adjNode.get(new Node(str2)).remove(new Node(str1));
-    }
+    private void dfsHelper(int node, Set<Integer> visited) {
+        if (visited.contains(node)) return;
 
-    public void removeNode(String str) {
-        adjNode.remove(new Node(str));
-        for (List<Node> edges : adjNode.values()) {
-            edges.remove(new Node(str));
+        System.out.print(node + " ");
+        visited.add(node);
+
+        for (int neighbor : adjList.getOrDefault(node, new ArrayList<>())) {
+            dfsHelper(neighbor, visited);
         }
     }
 
-    public List<Node> getVertices() {
-        return new ArrayList<>(adjNode.keySet());
+    public void bfs(int start) {
+        Set<Integer> visited = new HashSet<>();
+        Queue<Integer> queue = new LinkedList<>();
+
+        queue.add(start);
+        visited.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+
+            for (int neighbor : adjList.getOrDefault(node, new ArrayList<>())) {
+                if (!visited.contains(neighbor)) {
+                    queue.add(neighbor);
+                    visited.add(neighbor);
+                }
+            }
+        }
     }
-} 
+}
