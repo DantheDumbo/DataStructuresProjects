@@ -5,6 +5,7 @@ class Graph {
 
     public Graph() {
         this.adjList = new HashMap<>();
+        System.out.println("You just created a graph");
     }
 
     public void addEdge(int src, int dest) {
