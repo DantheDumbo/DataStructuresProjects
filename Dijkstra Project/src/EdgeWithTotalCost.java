@@ -12,7 +12,7 @@ public class EdgeWithTotalCost implements Comparable<EdgeWithTotalCost> {
 
     @Override
     public String toString() {
-        return "(" + (char)('A' + this.from) + ", " + (char)('A' + this.to) + ", " +  mk'A' + this.totalCost) + ")";
+        return "(" + (char)('A' + this.from) + ", " + (char)('A' + this.to) + ", " +  ('A' + this.totalCost) + ")";
     }
 
     @Override
