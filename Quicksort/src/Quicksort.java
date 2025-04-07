@@ -16,8 +16,7 @@ public class Quicksort {
             return arr;
         }
         int pivot = getPivot(arr);
-
-
+        return new int[]{0, 2, 3};
     }
 
     public static void main(String[] args) {
