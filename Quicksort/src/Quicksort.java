@@ -1,25 +1,85 @@
+import java.util.Arrays;
+
 public class Quicksort {
 
-    public int getPivot(int[] arr) {
+    public int getPivotIndex(int[] arr, int low, int high) {
+        int mid = low + (high - low) / 2;
+        int a = arr[low];
+        int b = arr[mid];
+        int c = arr[high];
 
-        int a = arr[0];
-        int b = arr[arr.length / 2];
-        int c = arr[arr.length - 1];
-
-        if ((a > b) != (a > c)) return a;
-        else if ((b > a) != (b > c)) return b;
-        else return c;
+        if ((a > b) != (a > c)) return low;
+        else if ((b > a) != (b > c)) return mid;
+        else return high;
     }
 
     public int[] quicksort(int[] arr) {
-        if (arr == null) {
+        if (arr == null || arr.length <= 1) {
             return arr;
         }
-        int pivot = getPivot(arr);
-        return new int[]{0, 2, 3};
+        quicksortHelper(arr, 0, arr.length - 1);
+        return arr;
+    }
+
+    private void quicksortHelper(int[] arr, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high);
+            quicksortHelper(arr, low, pivotIndex);
+            quicksortHelper(arr, pivotIndex + 1, high);
+        }
+    }
+
+    private int partition(int[] arr, int low, int high) {
+        int pivotIndex = getPivotIndex(arr, low, high);
+        int pivot = arr[pivotIndex];
+
+        // Move pivot to the start of the subarray
+        int temp = arr[pivotIndex];
+        arr[pivotIndex] = arr[low];
+        arr[low] = temp;
+
+        int i = low - 1;
+        int j = high + 1;
+
+        while (true) {
+            do {
+                i++;
+            } while (arr[i] < pivot);
+
+            do {
+                j--;
+            } while (arr[j] > pivot);
+
+            if (i >= j) {
+                return j;
+            }
+
+            // Swap arr[i] and arr[j]
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
     }
 
     public static void main(String[] args) {
-        int[] arr = {5,8,2,4,5,0,2,2,7};
+        Quicksort sorter = new Quicksort();
+
+        // Test case 1
+        int[] arr1 = {5, 8, 2, 4, 5, 0, 2, 2, 7};
+        System.out.println("Original: " + Arrays.toString(arr1));
+        sorter.quicksort(arr1);
+        System.out.println("Sorted:   " + Arrays.toString(arr1));
+
+        // Test case 2
+        int[] arr2 = {3, 1, 4, 1, 5, 9, 2};
+        System.out.println("\nOriginal: " + Arrays.toString(arr2));
+        sorter.quicksort(arr2);
+        System.out.println("Sorted:   " + Arrays.toString(arr2));
+
+        // Test case 3
+        int[] arr3 = {};
+        System.out.println("\nOriginal: " + Arrays.toString(arr3));
+        sorter.quicksort(arr3);
+        System.out.println("Sorted:   " + Arrays.toString(arr3));
     }
 }
