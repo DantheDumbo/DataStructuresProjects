@@ -32,8 +32,6 @@ public class Quicksort {
     private int partition(int[] arr, int low, int high) {
         int pivotIndex = getPivotIndex(arr, low, high);
         int pivot = arr[pivotIndex];
-
-        // Move pivot to the start of the subarray
         int temp = arr[pivotIndex];
         arr[pivotIndex] = arr[low];
         arr[low] = temp;
@@ -54,7 +52,6 @@ public class Quicksort {
                 return j;
             }
 
-            // Swap arr[i] and arr[j]
             temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
@@ -64,19 +61,16 @@ public class Quicksort {
     public static void main(String[] args) {
         Quicksort sorter = new Quicksort();
 
-        // Test case 1
         int[] arr1 = {5, 8, 2, 4, 5, 0, 2, 2, 7};
         System.out.println("Original: " + Arrays.toString(arr1));
         sorter.quicksort(arr1);
         System.out.println("Sorted:   " + Arrays.toString(arr1));
 
-        // Test case 2
         int[] arr2 = {3, 1, 4, 1, 5, 9, 2};
         System.out.println("\nOriginal: " + Arrays.toString(arr2));
         sorter.quicksort(arr2);
         System.out.println("Sorted:   " + Arrays.toString(arr2));
 
-        // Test case 3
         int[] arr3 = {};
         System.out.println("\nOriginal: " + Arrays.toString(arr3));
         sorter.quicksort(arr3);
