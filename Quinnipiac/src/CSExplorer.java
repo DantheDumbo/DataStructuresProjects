@@ -38,6 +38,8 @@ class CSExplorer {
     private JLabel statusLabel;
     private JPanel statusPanel;
 
+    private JButton startConveyorBtn;
+    private JButton stopConveyorBtn;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new CSExplorer().createAndShowGUI());
@@ -1086,44 +1088,6 @@ class CSExplorer {
     }
 
 
-
-
-    private void resetRoboticsPanel() {
-        // Clear all boxes from conveyor
-        boxes.clear();
-        conveyorPanel.removeAll();
-
-        // Reset robot position
-        robot = new JLabel("🤖");
-        robot.setFont(new Font("Arial", Font.PLAIN, 40));
-        robot.setHorizontalAlignment(SwingConstants.CENTER);
-        robot.setBounds(50, 100, 50, 50); // Initial position
-        conveyorPanel.add(robot, JLayeredPane.DEFAULT_LAYER);
-
-        // Reset containers and counts
-        JPanel containersPanel = new JPanel(new GridLayout(1, 3));
-        containersPanel.setOpaque(false);
-        containersPanel.setBounds(100, 250, 300, 50); // Adjusted bounds to match createRoboticsPanel
-
-        String[] containerTypes = {"📦", "📫", "🧺"};
-        for (int i = 0; i < 3; i++) {
-            containerCounts[i] = 0;
-            containers[i] = new JLabel(containerTypes[i] + " (0)", SwingConstants.CENTER);
-            containers[i].setFont(new Font("Arial", Font.PLAIN, 30));
-            containersPanel.add(containers[i]);
-        }
-
-        conveyorPanel.add(containersPanel, JLayeredPane.DEFAULT_LAYER);
-        currentHeldBox = null;
-
-        // Reset status message
-        statusLabel.setText("Use the controls to move the robot and sort boxes");
-        statusPanel.setBackground(new Color(100, 50, 50));
-
-        conveyorPanel.revalidate();
-        conveyorPanel.repaint();
-    }
-
     private void handleRobotAction(String action) {
         if (robot == null) return;
 
@@ -1196,22 +1160,71 @@ class CSExplorer {
         conveyorPanel.repaint();
     }
 
+
+    private JButton createMovementButton(String text, String action) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.BOLD, 20));
+        button.setBackground(new Color(80, 40, 40));
+        button.setForeground(Color.WHITE);
+        button.addActionListener(e -> handleRobotAction(action));
+        return button;
+    }
+
+
+    private void resetRoboticsPanel() {
+        // Clear all boxes from conveyor
+        boxes.clear();
+        conveyorPanel.removeAll();
+
+        // Reset robot position
+        robot = new JLabel("🤖");
+        robot.setFont(new Font("Arial", Font.PLAIN, 40));
+        robot.setHorizontalAlignment(SwingConstants.CENTER);
+        robot.setBounds(50, 100, 50, 50); // Initial position
+        conveyorPanel.add(robot, JLayeredPane.PALETTE_LAYER);
+
+        // Reset containers and counts
+        JPanel containersPanel = new JPanel(new GridLayout(1, 3));
+        containersPanel.setOpaque(false);
+        containersPanel.setBounds(100, 250, 300, 50);
+
+        String[] containerTypes = {"📦", "📫", "🧺"};
+        for (int i = 0; i < 3; i++) {
+            containerCounts[i] = 0;
+            containers[i] = new JLabel(containerTypes[i] + " (0)", SwingConstants.CENTER);
+            containers[i].setFont(new Font("Arial", Font.PLAIN, 30));
+            containers[i].setForeground(Color.WHITE); // Bright text
+            containersPanel.add(containers[i]);
+        }
+
+        conveyorPanel.add(containersPanel, JLayeredPane.DEFAULT_LAYER);
+        currentHeldBox = null;
+
+        // Reset status message
+        statusLabel.setText("Use the controls to move the robot and sort boxes");
+        statusPanel.setBackground(new Color(150, 50, 50)); // Brighter red
+
+        conveyorPanel.revalidate();
+        conveyorPanel.repaint();
+    }
+
     private void startConveyor() {
         if (conveyorTimer != null && conveyorTimer.isRunning()) {
             conveyorTimer.stop();
         }
 
-        conveyorTimer = new Timer(2000, e -> { // New box every 2 seconds
+        conveyorTimer = new Timer(2000, e -> {
             if (boxes.size() < 3) { // Max 3 boxes on conveyor
-                JLabel box = new JLabel("📦");
+                JLabel box = new JLabel("⬛"); // Black box
                 box.setFont(new Font("Arial", Font.PLAIN, 30));
+                box.setForeground(Color.BLACK);
                 box.setBounds(0, 160, 30, 30);
                 boxes.add(box);
                 conveyorPanel.add(box, JLayeredPane.PALETTE_LAYER);
 
                 // Animate box movement
                 Timer boxTimer = new Timer(50, evt -> {
-                    if (box.getParent() == null) { // Check if box was removed
+                    if (box.getParent() == null) {
                         ((Timer)evt.getSource()).stop();
                         return;
                     }
@@ -1240,39 +1253,54 @@ class CSExplorer {
                     }
                 });
                 boxTimer.start();
-                conveyorPanel.revalidate();
-                conveyorPanel.repaint();
             }
         });
         conveyorTimer.start();
         statusLabel.setText("Conveyor started - boxes incoming!");
+        startConveyorBtn.setEnabled(false);
+        stopConveyorBtn.setEnabled(true);
     }
 
     private void stopConveyor() {
         if (conveyorTimer != null) {
             conveyorTimer.stop();
+            conveyorTimer = null;
             statusLabel.setText("Conveyor stopped");
+            startConveyorBtn.setEnabled(true);
+            stopConveyorBtn.setEnabled(false);
         }
     }
 
-    private JButton createMovementButton(String text, String action) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 20));
-        button.setBackground(new Color(80, 40, 40));
-        button.setForeground(Color.WHITE);
-        button.addActionListener(e -> handleRobotAction(action));
-        return button;
-    }
-
     private void createRoboticsPanel() {
-        // Initialize containers array if not already done
+
+
+            // ... (previous code remains the same until containers setup)
+
+            // Initialize containers with better visibility
+            JPanel containersPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+            containersPanel.setBounds(100, 280, 300, 60); // Lower position
+            containersPanel.setOpaque(false);
+
+            String[] containerTypes = {"📦", "📫", "🧺"}; // Keep emojis if possible
+            Color[] containerColors = {Color.RED, Color.BLUE, Color.GREEN};
+
+            for (int i = 0; i < 3; i++) {
+                containers[i] = new JLabel(containerTypes[i] + " (0)", SwingConstants.CENTER);
+                containers[i].setFont(new Font("Arial", Font.BOLD, 24));
+                containers[i].setForeground(Color.WHITE);
+                containers[i].setOpaque(true);
+                containers[i].setBackground(containerColors[i]);
+                containers[i].setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+                containersPanel.add(containers[i]);
+            }
+        // Initialize variables
         containers = new JLabel[3];
         containerCounts = new int[3];
         boxes = new ArrayList<>();
 
-        // Create main panel
+        // Create main panel with brighter colors
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(new Color(50, 20, 20));
+        panel.setBackground(new Color(80, 40, 40));
         panels.put("robotics", panel);
 
         // Title
@@ -1283,15 +1311,16 @@ class CSExplorer {
 
         // Main content area
         JPanel contentPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-        contentPanel.setBackground(new Color(50, 20, 20));
+        contentPanel.setBackground(new Color(80, 40, 40));
 
         // Control panel (left side)
         JPanel controlPanel = new JPanel(new BorderLayout());
-        controlPanel.setBackground(new Color(60, 30, 30));
+        controlPanel.setBackground(new Color(100, 60, 60));
+        controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Movement buttons grid
-        JPanel directionPanel = new JPanel(new GridLayout(3, 3));
-        directionPanel.setBackground(new Color(60, 30, 30));
+        JPanel directionPanel = new JPanel(new GridLayout(3, 3, 5, 5));
+        directionPanel.setBackground(new Color(100, 60, 60));
 
         // Add buttons with proper spacing
         directionPanel.add(new JLabel(""));
@@ -1308,25 +1337,27 @@ class CSExplorer {
 
         controlPanel.add(directionPanel, BorderLayout.CENTER);
 
-        // Conveyor panel (right side) - using JLayeredPane for better layering
+        // Conveyor panel (right side)
         conveyorPanel = new JLayeredPane();
-        conveyorPanel.setBackground(new Color(70, 70, 70));
+        conveyorPanel.setBackground(new Color(120, 120, 120)); // Brighter conveyor
         conveyorPanel.setPreferredSize(new Dimension(500, 350));
+        conveyorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
 
-        // Initialize containers (add first so they appear underneath)
-        String[] containerTypes = {"📦", "📫", "🧺"};
-        JPanel containersPanel = new JPanel(new GridLayout(1, 3));
-        containersPanel.setBounds(100, 300, 300, 50);
+        // Initialize containers
+        JPanel containersPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+        containersPanel.setBounds(100, 250, 300, 50);
         containersPanel.setOpaque(false);
 
+        String[] containerTypes = {"📦", "📫", "🧺"};
         for (int i = 0; i < 3; i++) {
             containers[i] = new JLabel(containerTypes[i] + " (0)", SwingConstants.CENTER);
             containers[i].setFont(new Font("Arial", Font.PLAIN, 30));
+            containers[i].setForeground(Color.WHITE);
             containersPanel.add(containers[i]);
         }
         conveyorPanel.add(containersPanel, JLayeredPane.DEFAULT_LAYER);
 
-        // Initialize robot (added after containers so it appears on top)
+        // Initialize robot
         robot = new JLabel("🤖");
         robot.setFont(new Font("Arial", Font.PLAIN, 40));
         robot.setBounds(50, 150, 50, 50);
@@ -1339,22 +1370,29 @@ class CSExplorer {
 
         // Status panel
         statusPanel = new JPanel(new BorderLayout());
-        statusPanel.setBackground(new Color(100, 50, 50));
+        statusPanel.setBackground(new Color(150, 50, 50));
+        statusPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         statusLabel = new JLabel("Use the controls to move the robot", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
         statusLabel.setForeground(Color.WHITE);
         statusPanel.add(statusLabel, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+        // Control buttons
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 0));
 
-        JButton startButton = new JButton("Start Conveyor");
-        startButton.addActionListener(e -> startConveyor());
-        buttonPanel.add(startButton);
+        startConveyorBtn = new JButton("Start Conveyor");
+        startConveyorBtn.setBackground(new Color(80, 120, 80));
+        startConveyorBtn.setForeground(Color.WHITE);
+        startConveyorBtn.addActionListener(e -> startConveyor());
+        buttonPanel.add(startConveyorBtn);
 
-        JButton stopButton = new JButton("Stop Conveyor");
-        stopButton.addActionListener(e -> stopConveyor());
-        buttonPanel.add(stopButton);
+        stopConveyorBtn = new JButton("Stop Conveyor");
+        stopConveyorBtn.setBackground(new Color(120, 80, 80));
+        stopConveyorBtn.setForeground(Color.WHITE);
+        stopConveyorBtn.setEnabled(false);
+        stopConveyorBtn.addActionListener(e -> stopConveyor());
+        buttonPanel.add(stopConveyorBtn);
 
         statusPanel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -1362,6 +1400,8 @@ class CSExplorer {
 
         // Back button
         JButton backButton = new JButton("Back to Menu");
+        backButton.setBackground(new Color(100, 100, 100));
+        backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> {
             stopConveyor();
             cardLayout.show(mainPanel, "menu");
@@ -1370,9 +1410,4 @@ class CSExplorer {
 
         mainPanel.add(panel, "robotics");
     }
-
-
 }
-
-
-
