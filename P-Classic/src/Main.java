@@ -13,15 +13,15 @@ public class Main {
             count++;
         }
 
-        for (int i = a.size() - 1; i >= 0; i--) { // loop backwards
+        for (int i = a.size() - 1; i >= 0; i--) {
             String newNum = a.get(i) + "";
             if (newNum.indexOf('0') >= 0) {
-                a.remove(i); // fix: remove by index, not by value
+                a.remove(i);
                 continue;
             }
             newNum = newNum.replaceAll("0", "");
             if ((Math.sqrt(Double.parseDouble(newNum))) % 1 != 0) {
-                a.remove(i); // also remove if not a perfect square after removing zeros
+                a.remove(i);
             }
         }
 
