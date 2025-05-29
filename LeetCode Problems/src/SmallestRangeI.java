@@ -4,40 +4,17 @@ public class SmallestRangeI {
         int max = nums[0];
 
         for (int x : nums) {
-            if (min > x) min = x;
-            if (max < x) max = x;
+            min = Math.min(min, x);
+            max = Math.max(max, x);
         }
 
-        int goal = (int)((max + min) / 2);
+        int diff = max - min;
 
-        for (int i=0; i < nums.length; i++) {
-            if (nums[i] < goal) {
-                if (goal - nums[i] >= k) {
-                    nums[i] = nums[i] + k;
-                }
-                else {
-                    nums[i] = goal;
-                }
-            }
-            else {
-                if (nums[i] - goal >= k) {
-                    nums[i] = nums[i] - k;
-                }
-                else {
-                    nums[i] = goal;
-                }
-            }
-        }
-
-        for (int x : nums) {
-            if (min > x) min = x;
-            if (max < x) max = x;
-        }
-        return max - min;
+        return Math.max(0, diff - 2 * k);
     }
 
     public static void main(String[] args) {
         int[] x = {1, 3, 6};
-        System.out.println(smallestRangeI(x, 3));
+        System.out.println(smallestRangeI(x, 3));  // Output: 0
     }
 }
