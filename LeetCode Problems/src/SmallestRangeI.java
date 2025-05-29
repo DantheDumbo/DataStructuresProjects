@@ -1,4 +1,4 @@
-public class Smallest_Range_I {
+public class SmallestRangeI {
     public static int smallestRangeI(int[] nums, int k) {
         int min = nums[0];
         int max = nums[0];
